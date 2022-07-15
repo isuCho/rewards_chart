@@ -36,7 +36,7 @@ class NewVisitorTest(unittest.TestCase):
         sleep(2)
 
         table = self.browser.find_element(By.ID, 'id_children_table')
-        rows = table.find_elements('tr')
+        rows = table.find_elements(By.TAG_NAME, 'tr')
         self.assertTrue(
             any(row.text == 'Yuna' for row in rows)
         )
@@ -51,7 +51,3 @@ class NewVisitorTest(unittest.TestCase):
         # There is another textbox underneath 'Yuna'.
         # She enters 'practice clarinet' and 30 points. The page updates again, and shows both of Yuna's tasks
         # underneath her name.
-
-
-if __name__ == '__main__':
-    unittest.main()
