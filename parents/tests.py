@@ -19,14 +19,12 @@ class NewChildTest(TestCase):
 class ChildListTest(TestCase):
 
     def test_child_list_page_shows_children(self):
-        self.client.post('/parents/new', data={'child_name': 'Yaes'})
+        parent_ = Parent.objects.create()
+        Child.objects.create(name="Molly", parent=parent_, points=50)
+        response = self.client.get(f'/parents/{parent_.id}/')
+        self.assertContains(response, 'Molly')
 
-    def test_can_save_a_post_request(self):
-        self.client.post('/', data={'child_name': 'Yaes'})
-        self.assertEqual(Child.objects.count(), 1)
 
-
-#
 # class NewParentTest(TestCase):
 #
 #     def test_can_save_a_new_child(self):

@@ -19,5 +19,5 @@ def view_child_list(request, parent_id):
 
 def add_child(request, parent_id):
     parent_ = Parent.objects.get(id=parent_id)
-    Child.objects.create(name=request.POST["child_name"], parent=parent_)
+    Child.objects.create(name=request.POST['child_name'], parent=parent_)
     return redirect(f'/parents/{parent_.id}/')
