@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Rewards chart</title>
-</head>
-<body>
-    <h1>Rewards chart</h1>
-    <input id="id_new_child" placeholder="Enter your child's name">
-    <table id="id_children_table"></table>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block body %}
+    <form method="POST" action="/parents/new">
+        <label><input name="child_name" id="id_new_child" placeholder="What's your child's name?">
+        </label>
+        {% csrf_token %}
+    </form>
+{% endblock %}
+

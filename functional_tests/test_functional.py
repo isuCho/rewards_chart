@@ -17,16 +17,14 @@ class NewVisitorTest(unittest.TestCase):
         # She goes to check out the homepage
         self.browser.get('http://localhost:8000')
 
-        # She notices the title and header mention a rewards chart
+        # She notices the title mention a rewards chart
         self.assertIn('Rewards chart', self.browser.title)
-        header_text = self.browser.find_element(By.TAG_NAME, 'h1').text
-        self.assertIn('Rewards chart', header_text)
 
         # She is invited to enter a child's name.
         inputbox = self.browser.find_element(By.ID, 'id_new_child')
         self.assertEqual(
             inputbox.get_attribute('placeholder'),
-            "Enter your child's name"
+            "What's your child's name?"
         )
 
         # She enters 'Yuna' into the textbox provided
@@ -37,9 +35,7 @@ class NewVisitorTest(unittest.TestCase):
 
         table = self.browser.find_element(By.ID, 'id_children_table')
         rows = table.find_elements(By.TAG_NAME, 'tr')
-        self.assertTrue(
-            any(row.text == 'Yuna' for row in rows)
-        )
+        self.assertIn('Yuna', [row.text for row in rows])
 
         # There is a textbox underneath 'Yuna' that lets her add a task, as well as points.
         self.fail('Finish the test!')

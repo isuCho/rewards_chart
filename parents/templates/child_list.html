@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <table id="id_children_table">
+        <tr>abc</tr>
+        {% for child in child_list.itemset.all %}
+            <tr><td>{{ child.name }}</td></tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

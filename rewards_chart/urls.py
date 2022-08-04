@@ -16,11 +16,11 @@ Including another URLconf
 import parents.views
 from django.contrib import admin
 from django.urls import path, include
-# from parents import urls as parents_urls
+from parents import urls as parents_urls
 from parents import views as parents_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', parents_views.home_page, name='home'),
-    # path('parents/', include(parents_urls)),
+    path('parents/', include(parents_urls)),
 ]
