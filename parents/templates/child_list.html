@@ -5,6 +5,26 @@
     <div class="child" id="id_children_table">
         {% for child in child_list.child_set.all %}
             <h2>{{ child.name }}</h2>
+            <form method="post" action="/parents/{{ child_list.id }}/{{ child.pk }}/new_task">
+                <label>
+                    <input name="new_task" id="id_new_task" placeholder="Enter a task">
+                </label>
+                <label>
+                    <input name="point" id="id_point" placeholder="And the points">
+                </label>
+                <input type="submit" name="submit" value="Add">
+                {% csrf_token %}
+            </form>
+            {% if child.task_set %}
+            <table id="id_task_table" class="table" style="width:50%">
+                {% for task in child.task_set.all %}
+                    <tr>
+                        <td>{{ task.text }}</td>
+                        <td>{{ task.points }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            </table>
         {% endfor %}
     </div>
 

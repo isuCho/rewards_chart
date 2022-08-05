@@ -57,7 +57,7 @@ class NewVisitorTest(unittest.TestCase):
         submitbutton.click()
         # listing 'clean bedroom' and 50 points.
         tasktable = self.browser.find_element(By.ID, 'id_task_table')
-        cells = table.find_elements(By.TAG_NAME, 'td')
+        cells = tasktable.find_elements(By.TAG_NAME, 'td')
         self.assertIn('Clean bedroom', [cell.text for cell in cells])
         self.assertIn('50', [cell.text for cell in cells])
 

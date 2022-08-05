@@ -16,6 +16,7 @@ class NewChildTest(TestCase):
         self.assertRedirects(response, f'/parents/{parent.id}/')
 
 
+
 class ChildListTest(TestCase):
 
     def test_child_list_page_shows_children(self):
@@ -34,6 +35,12 @@ class ChildTaskTest(TestCase):
         new_task = Task.objects.first()
         self.assertEqual(new_task.text, "Wash dishes")
         self.assertEqual(new_task.points, 50)
+        self.assertEqual(new_task.child.name, 'Molly')
+
+    def test_new_task_page_redirects_to_right_page(self):
+        response = self.client.post('/parents/new_task', data={'new_task': 'Wash dishes', 'points': 50})
+
+
 
 
 class HomePageTest(TestCase):
@@ -57,60 +64,59 @@ class HomePageTest(TestCase):
 #         self.assertRedirects(response, f'/parents/{new_parent.id}/')
 #
 #
-# class ChildrenViewTest(TestCase):
-#
-#     def test_displays_only_children_for_that_parent(self):
-#         correct_parent = Parent.objects.create()
-#         Child.objects.create(name='Child 1', parent=correct_parent)
-#         Child.objects.create(name='Child 2', parent=correct_parent)
-#         other_parent = Parent.objects.create()
-#         Child.objects.create(name='other child 1', parent=other_parent)
-#         Child.objects.create(name='other child 2', parent=other_parent)
-#
-#         response = self.client.get(f'/parents/{correct_parent.id}/')
-#
-#         self.assertContains(response, 'Child 1')
-#         self.assertContains(response, 'Child 2')
-#         self.assertNotContains(response, 'Child 1')
-#         self.assertNotContains(response, 'Child 2')
-#
-#     def test_passes_correct_parent_to_template(self):
-#         other_parent = Parent.objects.create()
-#         correct_parent = Parent.objects.create()
-#         response = self.client.get(f'/parents/{correct_parent.id}/')
-#         self.assertEqual(response.context['child_list'], correct_parent)
-#
-#
-# class ChildrenAndParentModelTest(TestCase):
-#
-#     def test_shows_children(self):
-#         parent_ = Parent()
-#         parent_.save()
-#
-#         first_child = Child()
-#         first_child.name = 'Gabe'
-#         first_child.parent = parent_
-#         first_child.save()
-#
-#         second_child = Child(name='Second')
-#         second_child.parent = parent_
-#         second_child.save()
-#
-#         saved_parent = Parent.objects.first()
-#         self.assertEqual(saved_parent, parent_)
-#
-#         saved_items = Child.objects.all()
-#         self.assertEqual(saved_items.count(), 2)
-#         print(saved_items)
-#
-#         first_saved_child = saved_items[0]
-#         second_saved_child = saved_items[1]
-#         self.assertEqual(first_saved_child.name, 'Gabe')
-#         self.assertEqual(second_saved_child.name, 'Second')
-#         self.assertEqual(first_saved_child.parent, parent_)
-#         self.assertEqual(second_saved_child.parent, parent_)
-#
-#
+class ChildrenViewTest(TestCase):
+
+    def test_displays_only_children_for_that_parent(self):
+        correct_parent = Parent.objects.create()
+        Child.objects.create(name='Child 1', parent=correct_parent)
+        Child.objects.create(name='Child 2', parent=correct_parent)
+        other_parent = Parent.objects.create()
+        Child.objects.create(name='other child 1', parent=other_parent)
+        Child.objects.create(name='other child 2', parent=other_parent)
+
+        response = self.client.get(f'/parents/{correct_parent.id}/')
+
+        self.assertContains(response, 'Child 1')
+        self.assertContains(response, 'Child 2')
+        self.assertNotContains(response, 'other child 1')
+        self.assertNotContains(response, 'other child 2')
+
+    def test_passes_correct_parent_to_template(self):
+        other_parent = Parent.objects.create()
+        correct_parent = Parent.objects.create()
+        response = self.client.get(f'/parents/{correct_parent.id}/')
+        self.assertEqual(response.context['child_list'], correct_parent)
+
+
+class ChildrenAndParentModelTest(TestCase):
+
+    def test_shows_children(self):
+        parent_ = Parent()
+        parent_.save()
+
+        first_child = Child()
+        first_child.name = 'Gabe'
+        first_child.parent = parent_
+        first_child.save()
+
+        second_child = Child(name='Second')
+        second_child.parent = parent_
+        second_child.save()
+
+        saved_parent = Parent.objects.first()
+        self.assertEqual(saved_parent, parent_)
+
+        saved_items = Child.objects.all()
+        self.assertEqual(saved_items.count(), 2)
+
+        first_saved_child = saved_items[0]
+        second_saved_child = saved_items[1]
+        self.assertEqual(first_saved_child.name, 'Gabe')
+        self.assertEqual(second_saved_child.name, 'Second')
+        self.assertEqual(first_saved_child.parent, parent_)
+        self.assertEqual(second_saved_child.parent, parent_)
+
+
 
 
 # #
