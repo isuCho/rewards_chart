@@ -33,8 +33,8 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys(Keys.ENTER)
         sleep(2)
 
-        table = self.browser.find_element(By.ID, 'id_children_table')
-        rows = table.find_elements(By.TAG_NAME, 'tr')
+        children = self.browser.find_element(By.ID, 'id_children_table')
+        rows = children.find_elements(By.TAG_NAME, 'h2')
         self.assertIn('Yuna', [row.text for row in rows])
 
         # There is a textbox underneath 'Yuna' that lets her add a task, points for the task, and submit

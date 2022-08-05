@@ -1,5 +1,5 @@
 from django.test import TestCase
-from parents.models import Child, Parent
+from parents.models import Child, Parent, Task
 
 
 class NewChildTest(TestCase):
@@ -24,6 +24,24 @@ class ChildListTest(TestCase):
         response = self.client.get(f'/parents/{parent_.id}/')
         self.assertContains(response, 'Molly')
 
+
+class ChildTaskTest(TestCase):
+
+    def test_can_add_task_to_child(self):
+        parent_ = Parent.objects.create()
+        child_ = Child.objects.create(name="Molly", parent=parent_)
+        Task.objects.create(text="Wash dishes", points=50, child=child_)
+        new_task = Task.objects.first()
+        self.assertEqual(new_task.text, "Wash dishes")
+        self.assertEqual(new_task.points, 50)
+
+
+class HomePageTest(TestCase):
+
+    def test_home_page_returns_correct_html(self):
+        response = self.client.get('/')
+        self.assertTemplateUsed(response, 'home.html')
+        self.assertEqual(response.status_code, 200)
 
 # class NewParentTest(TestCase):
 #
@@ -114,10 +132,3 @@ class ChildListTest(TestCase):
 # #
 # #         self.assertRedirects(response, f'/parents/{correct_parent.id}')
 #
-#
-# class HomePageTest(TestCase):
-#
-#     def test_home_page_returns_correct_html(self):
-#         response = self.client.get('/')
-#         self.assertTemplateUsed(response, 'home.html')
-#         self.assertEqual(response.status_code, 200)

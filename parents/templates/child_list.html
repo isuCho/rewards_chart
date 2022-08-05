@@ -2,10 +2,10 @@
 
 {% block body %}
 
-    <table id="id_children_table">
+    <div class="child" id="id_children_table">
         {% for child in child_list.child_set.all %}
-            <tr><td>{{ child.name }}</td></tr>
+            <h2>{{ child.name }}</h2>
         {% endfor %}
-    </table>
+    </div>
 
 {% endblock %}
