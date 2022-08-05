@@ -37,13 +37,31 @@ class NewVisitorTest(unittest.TestCase):
         rows = table.find_elements(By.TAG_NAME, 'tr')
         self.assertIn('Yuna', [row.text for row in rows])
 
-        # There is a textbox underneath 'Yuna' that lets her add a task, as well as points.
-        self.fail('Finish the test!')
+        # There is a textbox underneath 'Yuna' that lets her add a task, points for the task, and submit
+        taskbox = self.browser.find_element(By.ID, 'id_new_task')
+        self.assertEqual(
+            taskbox.get_attribute('placeholder'),
+            'Enter a task'
+        )
+        pointbox = self.browser.find_element(By.ID, 'id_point')
+        self.assertEqual(
+            pointbox.get_attribute('placeholder'),
+            'And the points'
+        )
+        submitbutton = self.browser.find_element(By.NAME, 'submit')
 
         # She types 'clean bedroom' into the textbox, and 50 points.
-        # When she hits 'enter' the page refreshes and there is an entry underneath 'Yuna'
+        taskbox.send_keys('Clean bedroom')
+        pointbox.send_keys('50')
+        # When she presses 'submit' the page refreshes and there is an entry underneath 'Yuna'
+        submitbutton.click()
         # listing 'clean bedroom' and 50 points.
+        tasktable = self.browser.find_element(By.ID, 'id_task_table')
+        cells = table.find_elements(By.TAG_NAME, 'td')
+        self.assertIn('Clean bedroom', [cell.text for cell in cells])
+        self.assertIn('50', [cell.text for cell in cells])
 
+        self.fail('Finish the test!')
         # There is another textbox underneath 'Yuna'.
         # She enters 'practice clarinet' and 30 points. The page updates again, and shows both of Yuna's tasks
         # underneath her name.
